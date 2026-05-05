@@ -16,7 +16,7 @@ resource "azurerm_linux_virtual_machine" "main" {
   name                  = "${each.key}-vm"
   location              = var.location
   resource_group_name   = var.resource_group_name
-  network_interface_ids = [azurerm_network_interface.main.id]
+  network_interface_ids = [azurerm_network_interface.main[each.key].id]
   size               = each.value
 
   source_image_id = var.image_id
@@ -42,6 +42,6 @@ resource "azurerm_dns_a_record" "main" {
   zone_name           = "rdevopsb89.online"
   resource_group_name = var.resource_group_name
   ttl                 = 30
-  records             = [azurerm_network_interface.main.private_ip_address]
+  records             = [azurerm_network_interface.main[each.key].private_ip_address]
 }
 
